@@ -146,6 +146,7 @@ uint8_t FREQUENCY_CalculateOutputPower(uint8_t TxpLow, uint8_t TxpMid, uint8_t T
 
 uint32_t FREQUENCY_RoundToStep(uint32_t freq, uint16_t step)
 {
+uint16_t value;
 	if(step == 833) {
         uint32_t base = freq/2500*2500;
         int chno = (freq - base) / 700;    // convert entered aviation 8.33Khz channel number scheme to actual frequency. 
@@ -156,7 +157,14 @@ uint32_t FREQUENCY_RoundToStep(uint32_t freq, uint16_t step)
 		return freq;
 	if(step >= 1000) 
 		step = step/2;
-	return (freq + (step + 1) / 2) / step * step;
+if (freq % step == 0)
+return freq;  // already on a step boundary
+value = freq % step;
+if (value < step / 2)
+return freq - value;
+else
+return freq + (step - value);
+//	return (freq + (step + 1) / 2) / step * step;  (**this calculation makes no sense, since it just splits the step value in half, then the last two calculations cancel each other, no point.
 }
 
 int32_t TX_freq_check(const uint32_t Frequency)

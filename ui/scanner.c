@@ -23,6 +23,9 @@
 #include "misc.h"
 #include "ui/helper.h"
 #include "ui/scanner.h"
+#ifdef ENABLE_DOCK
+	#include "app/uart.h"
+#endif
 
 void UI_DisplayScanner(void)
 {

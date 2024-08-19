@@ -37,6 +37,7 @@
 #include "driver/bk4819.h"
 #include "driver/gpio.h"
 #include "driver/backlight.h"
+#include "external/printf/printf.h"
 #include "functions.h"
 #include "misc.h"
 #include "settings.h"
@@ -51,10 +52,6 @@ static void ACTION_Scan_FM(bool bRestart);
 static void ACTION_AlarmOr1750(bool b1750);
 inline static void ACTION_Alarm() { ACTION_AlarmOr1750(false); }
 inline static void ACTION_1750() { ACTION_AlarmOr1750(true); };
-#endif
-
-#ifdef ENABLE_SPECTRUM
-#include "app/spectrum.h"
 #endif
 
 inline static void ACTION_ScanRestart() { ACTION_Scan(true); };
@@ -104,12 +101,6 @@ void (*action_opt_table[])(void) = {
 #else
 	[ACTION_OPT_BLMIN_TMP_OFF] = &FUNCTION_NOP,
 #endif
-
-#ifdef ENABLE_SPECTRUM
-	[ACTION_OPT_SPECTRUM] = &APP_RunSpectrum,
-#else
-	[ACTION_OPT_SPECTRUM] = &FUNCTION_NOP,
-#endif
 };
 
 static_assert(ARRAY_SIZE(action_opt_table) == ACTION_OPT_LEN);
@@ -124,7 +115,11 @@ void ACTION_Power(void)
 	gRequestDisplayScreen = gScreenToDisplay;
 
 #ifdef ENABLE_VOICE
-	gAnotherVoiceID   = VOICE_ID_POWER;
+AUDIO_SetVoiceID(0, VOICE_ID_POWER);
+AUDIO_PlaySingleVoice(true);
+AUDIO_SetDigitVoice(0, gTxVfo->OUTPUT_POWER + 1);
+AUDIO_PlaySingleVoice(true);
+//	gAnotherVoiceID   = VOICE_ID_POWER;
 #endif
 
 }
@@ -166,7 +161,7 @@ void ACTION_Monitor(void)
 	}
 	else
 #endif
-		gRequestDisplayScreen = gScreenToDisplay;
+	gRequestDisplayScreen = gScreenToDisplay;
 }
 
 void ACTION_Scan(bool bRestart)
@@ -249,7 +244,12 @@ void ACTION_SwitchDemodul(void)
 
 	if(gTxVfo->Modulation == MODULATION_UKNOWN)
 		gTxVfo->Modulation = MODULATION_FM;
+#if ENABLE_VOICE
+AUDIO_SetDigitVoice(0, gTxVfo->Modulation);
+AUDIO_PlaySingleVoice(0);
+#endif
 }
+
 
 
 void ACTION_Handle(KEY_Code_t Key, bool bKeyPressed, bool bKeyHeld)
@@ -295,7 +295,23 @@ void ACTION_Handle(KEY_Code_t Key, bool bKeyPressed, bool bKeyHeld)
 			funcLong  = gEeprom.KEY_2_LONG_PRESS_ACTION;
 			break;
 		case KEY_MENU:
-			funcLong  = gEeprom.KEY_M_LONG_PRESS_ACTION;
+unsigned int count1;
+const uint32_t frequency = gTxVfo->freq_config_RX.Frequency;
+int16_t freq1, freq2;
+char strfreq[10];
+freq1 = frequency / 100000;
+freq2 = frequency % 100000;
+sprintf(strfreq, "%d", freq1);
+for (count1 = 0; count1 < strlen(strfreq); count1++) {
+AUDIO_SetDigitVoice(count1, strfreq[count1]);
+}
+AUDIO_PlaySingleVoice(true);
+sprintf(strfreq, "%d", freq2);
+for (count1 = 0; count1 < strlen(strfreq); count1++) {
+AUDIO_SetDigitVoice(count1, strfreq[count1]);
+}
+AUDIO_PlaySingleVoice(true); 
+//			funcLong  = gEeprom.KEY_M_LONG_PRESS_ACTION;
 			break;
 		default:
 			break;
@@ -356,8 +372,9 @@ void ACTION_FM(void)
 
 static void ACTION_Scan_FM(bool bRestart)
 {
-	if (FUNCTION_IsRx())
+	if (FUNCTION_IsRx()) {
 		return;
+	}
 
 	GUI_SelectNextDisplay(DISPLAY_FM);
 
@@ -372,21 +389,21 @@ static void ACTION_Scan_FM(bool bRestart)
 		return;
 	}
 
-	uint16_t freq;
+	uint16_t Frequency;
 
 	if (bRestart) {
-		gFM_AutoScan = true;
+		gFM_AutoScan        = true;
 		gFM_ChannelPosition = 0;
 		FM_EraseChannels();
-		freq = BK1080_GetFreqLoLimit(gEeprom.FM_Band);
+		Frequency           = gEeprom.FM_LowerLimit;
 	} else {
-		gFM_AutoScan = false;
+		gFM_AutoScan        = false;
 		gFM_ChannelPosition = 0;
-		freq = gEeprom.FM_FrequencyPlaying;
+		Frequency           = gEeprom.FM_FrequencyPlaying;
 	}
 
-	BK1080_GetFrequencyDeviation(freq);
-	FM_Tune(freq, 1, bRestart);
+	BK1080_GetFrequencyDeviation(Frequency);
+	FM_Tune(Frequency, 1, bRestart);
 
 #ifdef ENABLE_VOICE
 	gAnotherVoiceID = VOICE_ID_SCANNING_BEGIN;

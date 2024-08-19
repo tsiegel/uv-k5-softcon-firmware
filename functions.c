@@ -57,8 +57,8 @@ void FUNCTION_Init(void)
 
 	g_SquelchLost      = false;
 
-	gFlagTailToneEliminationComplete   = false;
-	gTailToneEliminationCountdown_10ms = 0;
+	gFlagTailNoteEliminationComplete   = false;
+	gTailNoteEliminationCountdown_10ms = 0;
 	gFoundCTCSS                        = false;
 	gFoundCDCSS                        = false;
 	gFoundCTCSSCountdown_10ms          = 0;
@@ -152,7 +152,7 @@ void FUNCTION_Transmit()
 
 #if defined(ENABLE_FMRADIO)
 	if (gFmRadioMode)
-		BK1080_Init0();
+		BK1080_Init(0, false);
 #endif
 
 #ifdef ENABLE_ALARM
@@ -233,13 +233,15 @@ void FUNCTION_Select(FUNCTION_Type_t Function)
 
 	gCurrentFunction = Function;
 
-	if (bWasPowerSave && Function != FUNCTION_POWER_SAVE) {
+	if (bWasPowerSave && Function != FUNCTION_POWER_SAVE)
+	{
 		BK4819_Conditional_RX_TurnOn_and_GPIO6_Enable();
 		gRxIdleMode = false;
 		UI_DisplayStatus();
 	}
 
-	switch (Function) {
+	switch (Function)
+	{
 		case FUNCTION_FOREGROUND:
 			FUNCTION_Foreground(PreviousFunction);
 			return;
@@ -267,7 +269,6 @@ void FUNCTION_Select(FUNCTION_Type_t Function)
 	gSchedulePowerSave         = false;
 
 #if defined(ENABLE_FMRADIO)
-	if(Function != FUNCTION_INCOMING)
-		gFM_RestoreCountdown_10ms = 0;
+	gFM_RestoreCountdown_10ms = 0;
 #endif
 }

@@ -20,7 +20,6 @@
 #ifdef ENABLE_FMRADIO
 	#include "app/fm.h"
 #endif
-#include "driver/bk1080.h"
 #include "driver/bk4819.h"
 #include "driver/eeprom.h"
 #include "misc.h"
@@ -88,22 +87,22 @@ void SETTINGS_InitEEPROM(void)
 	{	// 0E88..0E8F
 		struct
 		{
-			uint16_t selFreq;
-			uint8_t  selChn;
-			uint8_t  isMrMode:1;
-			uint8_t  band:2;
-			//uint8_t  space:2;
-		} __attribute__((packed)) fmCfg;
-		EEPROM_ReadBuffer(0x0E88, &fmCfg, 4);
+			uint16_t SelectedFrequency;
+			uint8_t  SelectedChannel;
+			uint8_t  IsMrMode;
+			uint8_t  Padding[8];
+		} __attribute__((packed)) FM;
 
-		gEeprom.FM_Band = fmCfg.band;
-		//gEeprom.FM_Space = fmCfg.space;
-		gEeprom.FM_SelectedFrequency = 
-			(fmCfg.selFreq >= BK1080_GetFreqLoLimit(gEeprom.FM_Band) && fmCfg.selFreq <= BK1080_GetFreqHiLimit(gEeprom.FM_Band)) ? 
-				fmCfg.selFreq : BK1080_GetFreqLoLimit(gEeprom.FM_Band);
-			
-		gEeprom.FM_SelectedChannel = fmCfg.selChn;
-		gEeprom.FM_IsMrMode        = fmCfg.isMrMode;
+		EEPROM_ReadBuffer(0x0E88, &FM, 8);
+		gEeprom.FM_LowerLimit = 760;
+		gEeprom.FM_UpperLimit = 1080;
+		if (FM.SelectedFrequency < gEeprom.FM_LowerLimit || FM.SelectedFrequency > gEeprom.FM_UpperLimit)
+			gEeprom.FM_SelectedFrequency = 960;
+		else
+			gEeprom.FM_SelectedFrequency = FM.SelectedFrequency;
+
+		gEeprom.FM_SelectedChannel = FM.SelectedChannel;
+		gEeprom.FM_IsMrMode        = (FM.IsMrMode < 2) ? FM.IsMrMode : false;
 	}
 
 	// 0E40..0E67
@@ -160,8 +159,8 @@ void SETTINGS_InitEEPROM(void)
 #ifdef ENABLE_DTMF_CALLING
 	gEeprom.DTMF_SEPARATE_CODE           = DTMF_ValidateCodes((char *)(Data + 1), 1) ? Data[1] : '*';
 	gEeprom.DTMF_GROUP_CALL_CODE         = DTMF_ValidateCodes((char *)(Data + 2), 1) ? Data[2] : '#';
-	gEeprom.DTMF_DECODE_RESPONSE         = (Data[3] < 4) ? Data[3] : 0;
-	gEeprom.DTMF_auto_reset_time         = (Data[4] < 61 && Data[4] >= 5) ? Data[4] : 10;
+	gEeprom.DTMF_DECODE_RESPONSE         = (Data[3] <   4) ? Data[3] : 0;
+	gEeprom.DTMF_auto_reset_time         = (Data[4] <  61) ? Data[4] : (Data[4] >= 5) ? Data[4] : 10;
 #endif
 	gEeprom.DTMF_PRELOAD_TIME            = (Data[5] < 101) ? Data[5] * 10 : 300;
 	gEeprom.DTMF_FIRST_CODE_PERSIST_TIME = (Data[6] < 101) ? Data[6] * 10 : 100;
@@ -419,28 +418,25 @@ void SETTINGS_FactoryReset(bool bIsAll)
 }
 
 #ifdef ENABLE_FMRADIO
-void SETTINGS_SaveFM(void)
+	void SETTINGS_SaveFM(void)
 	{
-		union {
-			struct {
-				uint16_t selFreq;
-				uint8_t  selChn;
-				uint8_t  isMrMode:1;
-				uint8_t  band:2;
-				//uint8_t  space:2;
-			};
-			uint8_t __raw[8];
-		} __attribute__((packed)) fmCfg;
+		unsigned int i;
 
-		memset(fmCfg.__raw, 0xFF, sizeof(fmCfg.__raw));
-		fmCfg.selChn   = gEeprom.FM_SelectedChannel;
-		fmCfg.selFreq  = gEeprom.FM_SelectedFrequency;
-		fmCfg.isMrMode = gEeprom.FM_IsMrMode;
-		fmCfg.band     = gEeprom.FM_Band;
-		//fmCfg.space    = gEeprom.FM_Space;
-		EEPROM_WriteBuffer(0x0E88, fmCfg.__raw);
+		struct
+		{
+			uint16_t Frequency;
+			uint8_t  Channel;
+			bool     IsChannelSelected;
+			uint8_t  Padding[4];
+		} State;
 
-		for (unsigned i = 0; i < 5; i++)
+		memset(&State, 0xFF, sizeof(State));
+		State.Channel           = gEeprom.FM_SelectedChannel;
+		State.Frequency         = gEeprom.FM_SelectedFrequency;
+		State.IsChannelSelected = gEeprom.FM_IsMrMode;
+
+		EEPROM_WriteBuffer(0x0E88, &State);
+		for (i = 0; i < 5; i++)
 			EEPROM_WriteBuffer(0x0E40 + (i * 8), &gFM_Channels[i * 4]);
 	}
 #endif
@@ -756,9 +752,6 @@ buf[1] = 0
 #endif
 #ifdef ENABLE_AM_FIX
     | (1 << 4)
-#endif
-#ifdef ENABLE_SPECTRUM
-    | (1 << 5)
 #endif
 ;
 	EEPROM_WriteBuffer(0x1FF0, buf);

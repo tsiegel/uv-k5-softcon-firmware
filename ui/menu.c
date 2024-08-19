@@ -35,7 +35,9 @@
 #include "inputbox.h"
 #include "menu.h"
 #include "ui.h"
-
+#ifdef ENABLE_DOCK
+	#include "app/uart.h"
+#endif
 
 const t_menu_item MenuList[] =
 {
@@ -122,6 +124,9 @@ const t_menu_item MenuList[] =
 #endif
 	{"BatVol", VOICE_ID_INVALID,                       MENU_VOL           }, // was "VOL"
 	{"RxMode", VOICE_ID_DUAL_STANDBY,                  MENU_TDR           },
+#ifdef ENABLE_DOCK
+	{"Remote",  VOICE_ID_INVALID,     		           MENU_REMOTE_UI     },
+#endif
 	{"Sql",    VOICE_ID_SQUELCH,                       MENU_SQL           },
 
 	// hidden menu items from here on
@@ -362,9 +367,6 @@ const t_sidefunction gSubMenu_SIDEFUNCTIONS[] =
 #ifdef ENABLE_BLMIN_TMP_OFF
 	{"BLMIN\nTMP OFF",  ACTION_OPT_BLMIN_TMP_OFF}, 		//BackLight Minimum Temporay OFF
 #endif
-#ifdef ENABLE_SPECTRUM
-	{"SPECTRUM",         ACTION_OPT_SPECTRUM}
-#endif
 };
 
 const uint8_t gSubMenu_SIDEFUNCTIONS_size = ARRAY_SIZE(gSubMenu_SIDEFUNCTIONS);
@@ -376,6 +378,106 @@ int UI_MENU_GetCurrentMenuId() {
 		return MenuList[gMenuCursor].menu_id;
 
 	return MenuList[ARRAY_SIZE(MenuList)-1].menu_id;
+}
+
+void set_voice_number(int menu_option) {
+int remain, value;
+remain = menu_option % 10;
+value = menu_option / 10;
+if (value == 1)  {
+remain = 0;
+switch (menu_option) {
+case 10:
+AUDIO_SetVoiceID(0, VOICE_ID_10);
+break;
+case 11:
+AUDIO_SetVoiceID(0, VOICE_ID_11);
+break;
+case 12:
+AUDIO_SetVoiceID(0, VOICE_ID_12);
+break;
+case 13:
+AUDIO_SetVoiceID(0, VOICE_ID_13);
+break;
+case 14:
+AUDIO_SetVoiceID(0, VOICE_ID_14);
+break;
+case 15:
+AUDIO_SetVoiceID(0, VOICE_ID_15);
+break;
+case 16:
+AUDIO_SetVoiceID(0, VOICE_ID_16);
+break;
+case 17:
+AUDIO_SetVoiceID(0, VOICE_ID_17);
+break;
+case 18:
+AUDIO_SetVoiceID(0, VOICE_ID_18);
+break;
+case 19:
+AUDIO_SetVoiceID(0, VOICE_ID_19);
+break;
+}
+}
+else
+switch (value)
+{
+case 2:
+AUDIO_SetVoiceID(0, VOICE_ID_20);
+break;
+case 3:
+AUDIO_SetVoiceID(0, VOICE_ID_30);
+break;
+case 4:
+AUDIO_SetVoiceID(0, VOICE_ID_40);
+break;
+case 5:
+AUDIO_SetVoiceID(0, VOICE_ID_50);
+break;
+case 6:
+AUDIO_SetVoiceID(0, VOICE_ID_60);
+break;
+case 7:
+AUDIO_SetVoiceID(0, VOICE_ID_70);
+break;
+case 8:
+AUDIO_SetVoiceID(0, VOICE_ID_80);
+break;
+case 9:
+AUDIO_SetVoiceID(0, VOICE_ID_90);
+break;
+}
+if (remain > 0) 
+switch (remain) {
+case 1:
+AUDIO_SetVoiceID(1, VOICE_ID_1);
+break;
+case 2:
+AUDIO_SetVoiceID(1, VOICE_ID_2);
+break;
+case 3:
+AUDIO_SetVoiceID(1, VOICE_ID_3);
+break;
+case 4:
+AUDIO_SetVoiceID(1, VOICE_ID_4);
+break;
+case 5:
+AUDIO_SetVoiceID(1, VOICE_ID_5);
+break;
+case 6:
+AUDIO_SetVoiceID(1, VOICE_ID_6);
+break;
+case 7:
+AUDIO_SetVoiceID(1, VOICE_ID_7);
+break;
+case 8:
+AUDIO_SetVoiceID(1, VOICE_ID_8);
+break;
+case 9:
+AUDIO_SetVoiceID(1, VOICE_ID_9);
+break;
+}
+AUDIO_PlaySingleVoice(true);
 }
 
 uint8_t UI_MENU_GetMenuIdx(uint8_t id)
@@ -490,10 +592,58 @@ void UI_DisplayMenu(void)
 
 	BACKLIGHT_TurnOn();
 
+#ifdef ENABLE_VOICE
+if (MenuList[gMenuCursor].voice_id != VOICE_ID_INVALID)
+{
+AUDIO_SetVoiceID(0, MenuList[gMenuCursor].voice_id);
+}
+else
+{
+set_voice_number(gMenuCursor);
+}
+if (!gIsInSubMenu)
+AUDIO_PlaySingleVoice(0);
+#endif  
 	switch (UI_MENU_GetCurrentMenuId())
 	{
 		case MENU_SQL:
 			sprintf(String, "%d", gSubMenuSelection);
+#ifdef ENABLE_VOICE
+switch (gSubMenuSelection) {
+case 0: 
+AUDIO_SetVoiceID(0, VOICE_ID_0);
+break;
+case 1: 
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+break;
+case 2: 
+AUDIO_SetVoiceID(0, VOICE_ID_2);
+break;
+case 3:
+AUDIO_SetVoiceID(0, VOICE_ID_3);
+break;
+case 4:
+AUDIO_SetVoiceID(0, VOICE_ID_4);
+break;
+case 5:
+AUDIO_SetVoiceID(0, VOICE_ID_5);
+break;
+case 6:
+AUDIO_SetVoiceID(0, VOICE_ID_6);
+break;
+case 7:
+AUDIO_SetVoiceID(0, VOICE_ID_7);
+break;
+case 8:
+AUDIO_SetVoiceID(0, VOICE_ID_8);
+break;
+case 9:
+AUDIO_SetVoiceID(0, VOICE_ID_9);
+break;
+}
+if (gIsInSubMenu)
+AUDIO_PlaySingleVoice(0); 
+#endif
 			break;
 
 		case MENU_MIC:
@@ -512,35 +662,173 @@ void UI_DisplayMenu(void)
 		case MENU_STEP: {
 			uint16_t step = gStepFrequencyTable[FREQUENCY_GetStepIdxFromSortedIdx(gSubMenuSelection)];
 			sprintf(String, "%d.%02ukHz", step / 100, step % 100);
+#ifdef ENABLE_VOICE
+switch (gSubMenuSelection) {
+case 0:
+AUDIO_SetVoiceID(0, VOICE_ID_0);
+AUDIO_SetVoiceID(1, VOICE_ID_0);
+AUDIO_SetVoiceID(2, VOICE_ID_1);
+break;
+case 1:
+AUDIO_SetVoiceID(0, VOICE_ID_0);
+AUDIO_SetVoiceID(1, VOICE_ID_0);
+AUDIO_SetVoiceID(2, VOICE_ID_5);
+break;
+case 2:
+AUDIO_SetVoiceID(0, VOICE_ID_0);
+AUDIO_SetVoiceID(1, VOICE_ID_1);
+break;
+case 3:
+AUDIO_SetVoiceID(0, VOICE_ID_0);
+AUDIO_SetVoiceID(1, VOICE_ID_20);
+AUDIO_SetVoiceID(2, VOICE_ID_5);
+break;
+case 4:
+AUDIO_SetVoiceID(0, VOICE_ID_0);
+AUDIO_SetVoiceID(1, VOICE_ID_50);
+break;
+case 5:
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+break;
+case 6:
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+AUDIO_SetVoiceID(1, VOICE_ID_20);
+AUDIO_SetVoiceID(2, VOICE_ID_5);
+break;
+case 7:
+AUDIO_SetVoiceID(0, VOICE_ID_2);
+AUDIO_SetVoiceID(1, VOICE_ID_5);
+break;
+case 8:
+AUDIO_SetVoiceID(0, VOICE_ID_5);
+break;
+case 9:
+AUDIO_SetVoiceID(0, VOICE_ID_6);
+AUDIO_SetVoiceID(1, VOICE_ID_20);
+AUDIO_SetVoiceID(2, VOICE_ID_5);
+break;
+case 10:
+AUDIO_SetVoiceID(0, VOICE_ID_8);
+AUDIO_SetVoiceID(1, VOICE_ID_30);
+AUDIO_SetVoiceID(2, VOICE_ID_3);
+break;
+case 11:
+AUDIO_SetVoiceID(0, VOICE_ID_9);
+break;
+case 12:
+AUDIO_SetVoiceID(0, VOICE_ID_10);
+break;
+case 13:
+AUDIO_SetVoiceID(0, VOICE_ID_12);
+AUDIO_SetVoiceID(2, VOICE_ID_5);
+break;
+case 14:
+AUDIO_SetVoiceID(0,VOICE_ID_15);
+break;
+case 15:
+AUDIO_SetVoiceID(0, VOICE_ID_20);
+break;
+case 16:
+AUDIO_SetVoiceID(0, VOICE_ID_20);
+AUDIO_SetVoiceID(1, VOICE_ID_5);
+break;
+case 17:
+AUDIO_SetVoiceID(0, VOICE_ID_30);
+break;
+case 18:
+AUDIO_SetVoiceID(0, VOICE_ID_50);
+break;
+case 19:
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+break;
+case 20:
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_20);
+AUDIO_SetVoiceID(3, VOICE_ID_5);
+break;
+case 21:
+AUDIO_SetVoiceID(0, VOICE_ID_2);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+break;
+case 22:
+AUDIO_SetVoiceID(0, VOICE_ID_2);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_50);
+break;
+case 23:
+AUDIO_SetVoiceID(0, VOICE_ID_5);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+break;
+}
+if (gIsInSubMenu)
+AUDIO_PlaySingleVoice(0);
+#endif
 			break;
 		}
 
 		case MENU_TXP:
 			strcpy(String, gSubMenu_TXP[gSubMenuSelection]);
+#ifdef ENABLE_VOICE
+if (gSubMenuSelection == 0) 
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+else if (gSubMenuSelection == 1) 
+AUDIO_SetVoiceID(0, VOICE_ID_2);
+else if (gSubMenuSelection == 2) 
+AUDIO_SetVoiceID(0, VOICE_ID_3);
+if (gIsInSubMenu)
+AUDIO_PlaySingleVoice(0); 
+#endif
 			break;
 
 		case MENU_R_DCS:
 		case MENU_T_DCS:
-			if (gSubMenuSelection == 0)
+			if (gSubMenuSelection == 0) {
 				strcpy(String, "OFF");
+AUDIO_SetVoiceID(0, VOICE_ID_OFF);
+}
 			else if (gSubMenuSelection < 105)
 				sprintf(String, "D%03oN", DCS_Options[gSubMenuSelection -   1]);
 			else
 				sprintf(String, "D%03oI", DCS_Options[gSubMenuSelection - 105]);
+if (gIsInSubMenu)
+AUDIO_PlaySingleVoice(0);
 			break;
 
 		case MENU_R_CTCS:
 		case MENU_T_CTCS:
 		{
-			if (gSubMenuSelection == 0)
+			if (gSubMenuSelection == 0) {
 				strcpy(String, "OFF");
+AUDIO_SetVoiceID(0, VOICE_ID_OFF);
+}
 			else
 				sprintf(String, "%u.%uHz", CTCSS_Options[gSubMenuSelection - 1] / 10, CTCSS_Options[gSubMenuSelection - 1] % 10);
+if (gIsInSubMenu)
+#ifdef ENABLE_VOICE
+AUDIO_PlaySingleVoice(0);
+#endif
 			break;
 		}
 
 		case MENU_SFT_D:
 			strcpy(String, gSubMenu_SFT_D[gSubMenuSelection]);
+#ifdef ENABLE_VOICE
+if (gSubMenuSelection == 0)  {
+AUDIO_SetVoiceID(0, VOICE_ID_OFF);
+if (gIsInSubMenu)
+AUDIO_PlaySingleVoice(0);
+}
+else if (gSubMenuSelection == 1)  {
+if (gIsInSubMenu)
+AUDIO_PlayBeep(BEEP_500HZ_60MS_DOUBLE_BEEP); 
+}
+else if (gSubMenuSelection == 2)  {
+if (gIsInSubMenu)
+AUDIO_PlayBeep(BEEP_880HZ_60MS_TRIPLE_BEEP);
+}
+#endif
 			break;
 
 		case MENU_OFFSET:
@@ -563,6 +851,14 @@ void UI_DisplayMenu(void)
 
 		case MENU_W_N:
 			strcpy(String, gSubMenu_W_N[gSubMenuSelection]);
+#ifdef ENABLE_VOICE
+if (gSubMenuSelection == 0)
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+else if (gSubMenuSelection == 1)
+AUDIO_SetVoiceID(0, VOICE_ID_2);
+if (gIsInSubMenu)
+AUDIO_PlaySingleVoice(0);
+#endif
 			break;
 
 		case MENU_SCR:
@@ -601,10 +897,34 @@ void UI_DisplayMenu(void)
 
 		case MENU_AM:
 			strcpy(String, gModulationStr[gSubMenuSelection]);
+switch (gSubMenuSelection) {
+case 0:
+AUDIO_SetVoiceID(0,VOICE_ID_1);
+break;
+case 1:
+AUDIO_SetVoiceID(0,VOICE_ID_2);
+break;
+case 2:
+AUDIO_SetVoiceID(0, VOICE_ID_3);
+break;
+}
+
+#ifdef ENABLE_VOICE
+if (gIsInSubMenu)
+AUDIO_PlaySingleVoice(0);
+#endif
 			break;
 
 		case MENU_AUTOLK:
 			strcpy(String, (gSubMenuSelection == 0) ? "OFF" : "AUTO");
+#ifdef ENABLE_VOICE
+if (gSubMenuSelection == 0)
+AUDIO_SetVoiceID(0, VOICE_ID_OFF);
+else if (gSubMenuSelection == 1)
+AUDIO_SetVoiceID(0, VOICE_ID_LOCK);
+if (gIsInSubMenu)
+AUDIO_PlaySingleVoice(0);
+#endif
 			break;
 
 		case MENU_COMPAND:
@@ -612,6 +932,9 @@ void UI_DisplayMenu(void)
 			strcpy(String, gSubMenu_RX_TX[gSubMenuSelection]);
 			break;
 
+		#ifdef ENABLE_DOCK
+			case MENU_REMOTE_UI:
+		#endif
 		#ifdef ENABLE_AM_FIX
 			case MENU_AM_FIX:
 		#endif
@@ -634,6 +957,14 @@ void UI_DisplayMenu(void)
 		case MENU_350EN:
 		case MENU_SCREN:
 			strcpy(String, gSubMenu_OFF_ON[gSubMenuSelection]);
+if (gSubMenuSelection == 0)
+AUDIO_SetVoiceID(0, VOICE_ID_OFF);
+else if (gSubMenuSelection == 1)
+AUDIO_SetVoiceID(0, VOICE_ID_ON);
+if (gIsInSubMenu)
+#ifdef ENABLE_VOICE
+AUDIO_PlaySingleVoice(0);
+#endif
 			break;
 
 		case MENU_MEM_CH:
@@ -695,6 +1026,27 @@ void UI_DisplayMenu(void)
 
 		case MENU_SAVE:
 			strcpy(String, gSubMenu_SAVE[gSubMenuSelection]);
+#ifdef ENABLE_VOICE
+switch (gSubMenuSelection) {
+case 0:
+AUDIO_SetVoiceID(0, VOICE_ID_OFF);
+break;
+case 1:
+AUDIO_SetDigitVoice(0, 121);
+break;
+case 2:
+AUDIO_SetDigitVoice(0, 122);
+break;
+case 3:
+AUDIO_SetDigitVoice(0, 123);
+break;
+case 4:
+AUDIO_SetDigitVoice(0, 124);
+break;
+}
+if (gIsInSubMenu)
+AUDIO_PlaySingleVoice(0);
+#endif
 			break;
 
 		case MENU_TDR:
@@ -703,16 +1055,73 @@ void UI_DisplayMenu(void)
 
 		case MENU_TOT:
 			strcpy(String, gSubMenu_TOT[gSubMenuSelection]);
+		#ifdef ENABLE_VOICE
+switch (gSubMenuSelection) {
+case 0:
+AUDIO_SetVoiceID(0,VOICE_ID_30);
+break;
+case 1:
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+break;
+case 2:
+AUDIO_SetVoiceID(0, VOICE_ID_2);
+break;
+case 3:
+AUDIO_SetVoiceID(0, VOICE_ID_3);
+break;
+case 4:
+AUDIO_SetVoiceID(0, VOICE_ID_4);
+break;
+case 5:
+AUDIO_SetVoiceID(0, VOICE_ID_5);
+break;
+case 6:
+AUDIO_SetVoiceID(0, VOICE_ID_6);
+break;
+case 7:
+AUDIO_SetVoiceID(0, VOICE_ID_7);
+break;
+case 8:
+AUDIO_SetVoiceID(0, VOICE_ID_8);
+break;
+case 9:
+AUDIO_SetVoiceID(0, VOICE_ID_9);
+break;
+case 10:
+AUDIO_SetVoiceID(0, VOICE_ID_15);
+break;
+}
+if (gIsInSubMenu)
+AUDIO_PlaySingleVoice(0);
+#endif
 			break;
 
 		#ifdef ENABLE_VOICE
 			case MENU_VOICE:
 				strcpy(String, gSubMenu_VOICE[gSubMenuSelection]);
+if (gSubMenuSelection == 0)
+AUDIO_SetVoiceID(0, VOICE_ID_OFF);
+if (gSubMenuSelection == 1)
+AUDIO_SetVoiceID(0, VOICE_ID_INVALID);
+if (gSubMenuSelection == 2)
+AUDIO_SetVoiceID(0, VOICE_ID_END);
+if (gIsInSubMenu)
+AUDIO_PlaySingleVoice(0);
 				break;
 		#endif
 
 		case MENU_SC_REV:
 			strcpy(String, gSubMenu_SC_REV[gSubMenuSelection]);
+		#ifdef ENABLE_VOICE
+if (gSubMenuSelection == 0)
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+if (gSubMenuSelection == 1)
+AUDIO_SetVoiceID(0, VOICE_ID_2);
+if (gSubMenuSelection == 2)
+AUDIO_SetVoiceID(0, VOICE_ID_3);
+if (gIsInSubMenu)
+AUDIO_PlaySingleVoice(0);
+#endif
 			break;
 
 		case MENU_MDF:
@@ -720,10 +1129,16 @@ void UI_DisplayMenu(void)
 			break;
 
 		case MENU_RP_STE:
-			if (gSubMenuSelection == 0)
+			if (gSubMenuSelection == 0) {
 				strcpy(String, "OFF");
+AUDIO_SetVoiceID(0, VOICE_ID_OFF);
+}
 			else
 				sprintf(String, "%d*100ms", gSubMenuSelection);
+#ifdef ENABLE_VOICE
+if (gIsInSubMenu)
+AUDIO_PlaySingleVoice(0);
+#endif
 			break;
 
 		case MENU_S_LIST:
@@ -795,10 +1210,20 @@ void UI_DisplayMenu(void)
 			sprintf(String, "%u.%02uV\n%u%%",
 				gBatteryVoltageAverage / 100, gBatteryVoltageAverage % 100,
 				BATTERY_VoltsToPercent(gBatteryVoltageAverage));
+AUDIO_SetDigitVoice(0, gBatteryVoltageAverage);
+AUDIO_PlaySingleVoice(0);
 			break;
 
 		case MENU_RESET:
 			strcpy(String, gSubMenu_RESET[gSubMenuSelection]);
+if (gSubMenuSelection == 0)
+AUDIO_SetDigitVoice(0, VOICE_ID_1);
+else if (gSubMenuSelection == 1)
+AUDIO_SetDigitVoice(0, VOICE_ID_2);
+		#ifdef ENABLE_VOICE
+if (gIsInSubMenu)
+AUDIO_PlaySingleVoice(0);
+#endif
 			break;
 
 		case MENU_F_LOCK:
@@ -832,6 +1257,19 @@ void UI_DisplayMenu(void)
 
 		case MENU_BATTYP:
 			strcpy(String, gSubMenu_BATTYP[gSubMenuSelection]);
+		#ifdef ENABLE_VOICE
+if (gSubMenuSelection == 0) {
+AUDIO_SetVoiceID(0, VOICE_ID_16);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+}
+if (gSubMenuSelection == 1) {
+AUDIO_SetVoiceID(0, VOICE_ID_20);
+AUDIO_SetVoiceID(1, VOICE_ID_2);
+AUDIO_SetVoiceID(2, VOICE_ID_100);
+}
+if (gIsInSubMenu)
+AUDIO_PlaySingleVoice(0);
+#endif
 			break;
 
 		case MENU_F1SHRT:
@@ -843,7 +1281,6 @@ void UI_DisplayMenu(void)
 			break;
 
 	}
-
 	if (!already_printed)
 	{	// we now do multi-line text in a single string
 

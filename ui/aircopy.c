@@ -26,6 +26,9 @@
 #include "ui/aircopy.h"
 #include "ui/helper.h"
 #include "ui/inputbox.h"
+#ifdef ENABLE_DOCK
+	#include "app/uart.h"
+#endif
 
 void UI_DisplayAircopy(void)
 {
