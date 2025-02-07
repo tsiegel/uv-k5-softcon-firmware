@@ -208,10 +208,17 @@ void Main(void)
 				AUDIO_SetDigitVoice(2, Channel + 1);
 			}
 			else if (IS_FREQ_CHANNEL(Channel))
+{
+const uint32_t frequency = gTxVfo->freq_config_RX.Frequency;
+int16_t freq1, freq2;
+freq1 = frequency / 100000;
+freq2 = frequency % 100000;
 				AUDIO_SetVoiceID(1, VOICE_ID_FREQUENCY_MODE);
-
+AUDIO_SetDigitVoice(2, freq1);
+AUDIO_SetDigitVoice(3, freq2);
+}
+}
 			AUDIO_PlaySingleVoice(0);
-		}
 #endif
 
 #ifdef ENABLE_NOAA
