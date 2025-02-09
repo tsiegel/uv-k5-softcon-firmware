@@ -669,6 +669,109 @@ AUDIO_PlaySingleVoice(0);
 		case MENU_STEP: {
 			uint16_t step = gStepFrequencyTable[FREQUENCY_GetStepIdxFromSortedIdx(gSubMenuSelection)];
 			sprintf(String, "%d.%02ukHz", step / 100, step % 100);
+#ifdef ENABLE_VOICE
+switch (gSubMenuSelection) {
+case 0:
+AUDIO_SetVoiceID(0, VOICE_ID_0);
+AUDIO_SetVoiceID(1, VOICE_ID_0);
+AUDIO_SetVoiceID(2, VOICE_ID_1);
+break;
+case 1:
+AUDIO_SetVoiceID(0, VOICE_ID_0);
+AUDIO_SetVoiceID(1, VOICE_ID_0);
+AUDIO_SetVoiceID(2, VOICE_ID_5);
+break;
+case 2:
+AUDIO_SetVoiceID(0, VOICE_ID_0);
+AUDIO_SetVoiceID(1, VOICE_ID_1);
+break;
+case 3:
+AUDIO_SetVoiceID(0, VOICE_ID_0);
+AUDIO_SetVoiceID(1, VOICE_ID_20);
+AUDIO_SetVoiceID(2, VOICE_ID_5);
+break;
+case 4:
+AUDIO_SetVoiceID(0, VOICE_ID_0);
+AUDIO_SetVoiceID(1, VOICE_ID_50);
+break;
+case 5:
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+break;
+case 6:
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+AUDIO_SetVoiceID(1, VOICE_ID_20);
+AUDIO_SetVoiceID(2, VOICE_ID_5);
+break;
+case 7:
+AUDIO_SetVoiceID(0, VOICE_ID_2);
+AUDIO_SetVoiceID(1, VOICE_ID_5);
+break;
+case 8:
+AUDIO_SetVoiceID(0, VOICE_ID_5);
+break;
+case 9:
+AUDIO_SetVoiceID(0, VOICE_ID_6);
+AUDIO_SetVoiceID(1, VOICE_ID_20);
+AUDIO_SetVoiceID(2, VOICE_ID_5);
+break;
+case 10:
+AUDIO_SetVoiceID(0, VOICE_ID_8);
+AUDIO_SetVoiceID(1, VOICE_ID_30);
+AUDIO_SetVoiceID(2, VOICE_ID_3);
+break;
+case 11:
+AUDIO_SetVoiceID(0, VOICE_ID_9);
+break;
+case 12:
+AUDIO_SetVoiceID(0, VOICE_ID_10);
+break;
+case 13:
+AUDIO_SetVoiceID(0, VOICE_ID_12);
+AUDIO_SetVoiceID(2, VOICE_ID_5);
+break;
+case 14:
+AUDIO_SetVoiceID(0,VOICE_ID_15);
+break;
+case 15:
+AUDIO_SetVoiceID(0, VOICE_ID_20);
+break;
+case 16:
+AUDIO_SetVoiceID(0, VOICE_ID_20);
+AUDIO_SetVoiceID(1, VOICE_ID_5);
+break;
+case 17:
+AUDIO_SetVoiceID(0, VOICE_ID_30);
+break;
+case 18:
+AUDIO_SetVoiceID(0, VOICE_ID_50);
+break;
+case 19:
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+break;
+case 20:
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_20);
+AUDIO_SetVoiceID(3, VOICE_ID_5);
+break;
+case 21:
+AUDIO_SetVoiceID(0, VOICE_ID_2);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+break;
+case 22:
+AUDIO_SetVoiceID(0, VOICE_ID_2);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_50);
+break;
+case 23:
+AUDIO_SetVoiceID(0, VOICE_ID_5);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+break;
+}
+if (gIsInSubMenu)
+AUDIO_PlaySingleVoice(0);
+#endif
 			break;
 		}
 
