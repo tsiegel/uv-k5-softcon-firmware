@@ -1095,6 +1095,8 @@ case 3:
 AUDIO_SetVoiceID(0, VOICE_ID_3);
 break;
 }
+if (gIsInSubMenu)
+AUDIO_PlaySingleVoice(0);
 			break;
 
 		case MENU_TOT:
