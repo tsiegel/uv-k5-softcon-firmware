@@ -777,6 +777,16 @@ AUDIO_PlaySingleVoice(0);
 
 		case MENU_TXP:
 			strcpy(String, gSubMenu_TXP[gSubMenuSelection]);
+#ifdef ENABLE_VOICE
+if (gSubMenuSelection == 0) 
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+else if (gSubMenuSelection == 1) 
+AUDIO_SetVoiceID(0, VOICE_ID_2);
+else if (gSubMenuSelection == 2) 
+AUDIO_SetVoiceID(0, VOICE_ID_3);
+if (gIsInSubMenu)
+AUDIO_PlaySingleVoice(0); 
+#endif
 			break;
 
 		case MENU_R_DCS:
