@@ -1132,10 +1132,16 @@ AUDIO_PlaySingleVoice(0);
 			break;
 
 		case MENU_RP_STE:
-			if (gSubMenuSelection == 0)
+			if (gSubMenuSelection == 0) {
 				strcpy(String, "OFF");
+AUDIO_SetVoiceID(0, VOICE_ID_OFF);
+}
 			else
 				sprintf(String, "%d*100ms", gSubMenuSelection);
+#ifdef ENABLE_VOICE
+if (gIsInSubMenu)
+AUDIO_PlaySingleVoice(0);
+#endif
 			break;
 
 		case MENU_S_LIST:
