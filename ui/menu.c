@@ -889,6 +889,32 @@ AUDIO_PlaySingleVoice(0);
 
 		case MENU_ABR:
 			strcpy(String, gSubMenu_BACKLIGHT[gSubMenuSelection]);
+switch (gSubMenuSelection) {
+case 0:
+AUDIO_SetVoiceID(0, VOICE_ID_OFF);
+break;
+case 1:
+AUDIO_SetVoiceID(0, VOICE_ID_5);
+break;
+case 2:
+AUDIO_SetVoiceID(0, VOICE_ID_10);
+break;
+case 3:
+AUDIO_SetVoiceID(0, VOICE_ID_20);
+break;
+case 4:
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+break;
+case 5:
+AUDIO_SetVoiceID(0, VOICE_ID_2);
+break;
+case 6:
+AUDIO_SetVoiceID(0, VOICE_ID_4);
+break;
+case 7:
+AUDIO_SetVoiceID(0, VOICE_ID_ON);
+break;
+}
 			if(BACKLIGHT_GetBrightness() < 4)
 				BACKLIGHT_SetBrightness(4);
 			break;
