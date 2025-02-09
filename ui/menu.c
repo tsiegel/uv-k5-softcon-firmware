@@ -1029,6 +1029,27 @@ AUDIO_PlaySingleVoice(0);
 
 		case MENU_SAVE:
 			strcpy(String, gSubMenu_SAVE[gSubMenuSelection]);
+#ifdef ENABLE_VOICE
+switch (gSubMenuSelection) {
+case 0:
+AUDIO_SetVoiceID(0, VOICE_ID_OFF);
+break;
+case 1:
+AUDIO_SetDigitVoice(0, 121);
+break;
+case 2:
+AUDIO_SetDigitVoice(0, 122);
+break;
+case 3:
+AUDIO_SetDigitVoice(0, 123);
+break;
+case 4:
+AUDIO_SetDigitVoice(0, 124);
+break;
+}
+if (gIsInSubMenu)
+AUDIO_PlaySingleVoice(0);
+#endif
 			break;
 
 		case MENU_TDR:
