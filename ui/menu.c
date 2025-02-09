@@ -904,6 +904,21 @@ AUDIO_PlaySingleVoice(0);
 
 		case MENU_AM:
 			strcpy(String, gModulationStr[gSubMenuSelection]);
+switch (gSubMenuSelection) {
+case 0:
+AUDIO_SetVoiceID(0,VOICE_ID_1);
+break;
+case 1:
+AUDIO_SetVoiceID(0,VOICE_ID_2);
+break;
+case 2:
+AUDIO_SetVoiceID(0, VOICE_ID_3);
+break;
+}
+#ifdef ENABLE_VOICE
+if (gIsInSubMenu)
+AUDIO_PlaySingleVoice(0);
+#endif
 			break;
 
 		case MENU_AUTOLK:
