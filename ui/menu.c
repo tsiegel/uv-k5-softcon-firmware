@@ -1328,6 +1328,32 @@ AUDIO_PlaySingleVoice(0);
 				strcpy(String, "READ\nMANUAL");
 			else
 				strcpy(String, gSubMenu_F_LOCK[gSubMenuSelection]);
+switch (gSubMenuSelection) {
+case 1:
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+break;
+case 2:
+AUDIO_SetVoiceID(0, VOICE_ID_2);
+break;
+case 3:
+AUDIO_SetVoiceID(0, VOICE_ID_3);
+break;
+case 4:
+AUDIO_SetVoiceID(0, VOICE_ID_4);
+break;
+case 5:
+AUDIO_SetVoiceID(0, VOICE_ID_5);
+break;
+case 6:
+AUDIO_SetVoiceID(0, VOICE_ID_6);
+break;
+case 7:
+AUDIO_SetVoiceID(0, VOICE_ID_7);
+break;
+case 8:
+AUDIO_SetVoiceID(0, VOICE_ID_8);
+break;
+}
 			break;
 
 		#ifdef ENABLE_F_CAL_MENU
