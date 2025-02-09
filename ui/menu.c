@@ -806,10 +806,16 @@ AUDIO_PlaySingleVoice(0);
 		case MENU_R_CTCS:
 		case MENU_T_CTCS:
 		{
-			if (gSubMenuSelection == 0)
+			if (gSubMenuSelection == 0) {
 				strcpy(String, "OFF");
+AUDIO_SetVoiceID(0, VOICE_ID_OFF);
+}
 			else
 				sprintf(String, "%u.%uHz", CTCSS_Options[gSubMenuSelection - 1] / 10, CTCSS_Options[gSubMenuSelection - 1] % 10);
+if (gIsInSubMenu)
+#ifdef ENABLE_VOICE
+AUDIO_PlaySingleVoice(0);
+#endif
 			break;
 		}
 
