@@ -1080,6 +1080,21 @@ AUDIO_PlaySingleVoice(0);
 
 		case MENU_TDR:
 			strcpy(String, gSubMenu_RXMode[gSubMenuSelection]);
+		#ifdef ENABLE_VOICE
+switch (gSubMenuSelection) {
+case 0:
+AUDIO_SetVoiceID(0, VOICE_ID_OFF);
+break;
+case 1:
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+break;
+case 2:
+AUDIO_SetVoiceID(0, VOICE_ID_2);
+break;
+case 3:
+AUDIO_SetVoiceID(0, VOICE_ID_3);
+break;
+}
 			break;
 
 		case MENU_TOT:
@@ -1270,13 +1285,13 @@ AUDIO_PlaySingleVoice(0);
 			strcpy(String, gSubMenu_ROGER[gSubMenuSelection]);
 switch (gSubMenuSelection) {
 case 0:
-AUDIO_SetVoiceID(0, VOICE_ID_1);
+AUDIO_SetVoiceID(0, VOICE_ID_OFF);
 break;
 case 1:
-AUDIO_SetVoiceID(0,VOICE_ID_2);
+AUDIO_SetVoiceID(0,VOICE_ID_1);
 break;
 case 2:
-AUDIO_SetVoiceID(0, VOICE_ID_3);
+AUDIO_SetVoiceID(0, VOICE_ID_2);
 break;
 }
 
