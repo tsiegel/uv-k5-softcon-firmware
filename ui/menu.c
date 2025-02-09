@@ -791,12 +791,16 @@ AUDIO_PlaySingleVoice(0);
 
 		case MENU_R_DCS:
 		case MENU_T_DCS:
-			if (gSubMenuSelection == 0)
+			if (gSubMenuSelection == 0) {
 				strcpy(String, "OFF");
+AUDIO_SetVoiceID(0, VOICE_ID_OFF);
+}
 			else if (gSubMenuSelection < 105)
 				sprintf(String, "D%03oN", DCS_Options[gSubMenuSelection -   1]);
 			else
 				sprintf(String, "D%03oI", DCS_Options[gSubMenuSelection - 105]);
+if (gIsInSubMenu)
+AUDIO_PlaySingleVoice(0);
 			break;
 
 		case MENU_R_CTCS:
