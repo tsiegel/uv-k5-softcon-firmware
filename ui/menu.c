@@ -615,6 +615,42 @@ AUDIO_PlaySingleVoice(0);
 	{
 		case MENU_SQL:
 			sprintf(String, "%d", gSubMenuSelection);
+#ifdef ENABLE_VOICE
+switch (gSubMenuSelection) {
+case 0: 
+AUDIO_SetVoiceID(0, VOICE_ID_0);
+break;
+case 1: 
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+break;
+case 2: 
+AUDIO_SetVoiceID(0, VOICE_ID_2);
+break;
+case 3:
+AUDIO_SetVoiceID(0, VOICE_ID_3);
+break;
+case 4:
+AUDIO_SetVoiceID(0, VOICE_ID_4);
+break;
+case 5:
+AUDIO_SetVoiceID(0, VOICE_ID_5);
+break;
+case 6:
+AUDIO_SetVoiceID(0, VOICE_ID_6);
+break;
+case 7:
+AUDIO_SetVoiceID(0, VOICE_ID_7);
+break;
+case 8:
+AUDIO_SetVoiceID(0, VOICE_ID_8);
+break;
+case 9:
+AUDIO_SetVoiceID(0, VOICE_ID_9);
+break;
+}
+if (gIsInSubMenu)
+AUDIO_PlaySingleVoice(0); 
+#endif
 			break;
 
 		case MENU_MIC:
