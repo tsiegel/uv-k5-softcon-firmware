@@ -821,6 +821,21 @@ AUDIO_PlaySingleVoice(0);
 
 		case MENU_SFT_D:
 			strcpy(String, gSubMenu_SFT_D[gSubMenuSelection]);
+#ifdef ENABLE_VOICE
+if (gSubMenuSelection == 0)  {
+AUDIO_SetVoiceID(0, VOICE_ID_OFF);
+if (gIsInSubMenu)
+AUDIO_PlaySingleVoice(0);
+}
+else if (gSubMenuSelection == 1)  {
+if (gIsInSubMenu)
+AUDIO_PlayBeep(BEEP_500HZ_60MS_DOUBLE_BEEP); 
+}
+else if (gSubMenuSelection == 2)  {
+if (gIsInSubMenu)
+AUDIO_PlayBeep(BEEP_880HZ_60MS_TRIPLE_BEEP);
+}
+#endif
 			break;
 
 		case MENU_OFFSET:
