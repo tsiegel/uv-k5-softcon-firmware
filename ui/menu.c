@@ -960,6 +960,14 @@ AUDIO_PlaySingleVoice(0);
 		case MENU_350EN:
 		case MENU_SCREN:
 			strcpy(String, gSubMenu_OFF_ON[gSubMenuSelection]);
+if (gSubMenuSelection == 0)
+AUDIO_SetVoiceID(0, VOICE_ID_OFF);
+else if (gSubMenuSelection == 1)
+AUDIO_SetVoiceID(0, VOICE_ID_ON);
+if (gIsInSubMenu)
+#ifdef ENABLE_VOICE
+AUDIO_PlaySingleVoice(0);
+#endif
 			break;
 
 		case MENU_MEM_CH:
