@@ -1213,6 +1213,8 @@ AUDIO_PlaySingleVoice(0);
 			sprintf(String, "%u.%02uV\n%u%%",
 				gBatteryVoltageAverage / 100, gBatteryVoltageAverage % 100,
 				BATTERY_VoltsToPercent(gBatteryVoltageAverage));
+AUDIO_SetDigitVoice(0, gBatteryVoltageAverage);
+AUDIO_PlaySingleVoice(0);
 			break;
 
 		case MENU_RESET:
