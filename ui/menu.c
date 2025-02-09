@@ -923,6 +923,14 @@ AUDIO_PlaySingleVoice(0);
 
 		case MENU_AUTOLK:
 			strcpy(String, (gSubMenuSelection == 0) ? "OFF" : "AUTO");
+#ifdef ENABLE_VOICE
+if (gSubMenuSelection == 0)
+AUDIO_SetVoiceID(0, VOICE_ID_OFF);
+else if (gSubMenuSelection == 1)
+AUDIO_SetVoiceID(0, VOICE_ID_LOCK);
+if (gIsInSubMenu)
+AUDIO_PlaySingleVoice(0);
+#endif
 			break;
 
 		case MENU_COMPAND:
