@@ -378,6 +378,114 @@ int UI_MENU_GetCurrentMenuId() {
 	return MenuList[ARRAY_SIZE(MenuList)-1].menu_id;
 }
 
+void set_voice_number(int menu_option) {
+int remain, value;
+remain = menu_option % 10;
+value = menu_option / 10;
+if (value == 1)  {
+remain = 0;
+switch (menu_option) {
+case 10:
+AUDIO_SetVoiceID(0, VOICE_ID_10);
+break;
+case 11:
+AUDIO_SetVoiceID(0, VOICE_ID_11);
+break;
+case 12:
+AUDIO_SetVoiceID(0, VOICE_ID_12);
+break;
+case 13:
+AUDIO_SetVoiceID(0, VOICE_ID_13);
+break;
+case 14:
+AUDIO_SetVoiceID(0, VOICE_ID_14);
+break;
+case 15:
+AUDIO_SetVoiceID(0, VOICE_ID_15);
+break;
+case 16:
+AUDIO_SetVoiceID(0, VOICE_ID_16);
+break;
+case 17:
+AUDIO_SetVoiceID(0, VOICE_ID_17);
+break;
+case 18:
+AUDIO_SetVoiceID(0, VOICE_ID_18);
+break;
+case 19:
+AUDIO_SetVoiceID(0, VOICE_ID_19);
+break;
+}
+}
+else
+switch (value)
+{
+case 2:
+AUDIO_SetVoiceID(0, VOICE_ID_20);
+break;
+case 3:
+AUDIO_SetVoiceID(0, VOICE_ID_30);
+break;
+case 4:
+AUDIO_SetVoiceID(0, VOICE_ID_40);
+break;
+case 5:
+AUDIO_SetVoiceID(0, VOICE_ID_50);
+break;
+case 6:
+AUDIO_SetVoiceID(0, VOICE_ID_60);
+break;
+case 7:
+AUDIO_SetVoiceID(0, VOICE_ID_70);
+break;
+case 8:
+AUDIO_SetVoiceID(0, VOICE_ID_80);
+break;
+case 9:
+AUDIO_SetVoiceID(0, VOICE_ID_90);
+break;
+}
+if (remain > 0) 
+switch (remain) {
+case 1:
+AUDIO_SetVoiceID(1, VOICE_ID_1);
+break;
+case 2:
+AUDIO_SetVoiceID(1, VOICE_ID_2);
+break;
+case 3:
+AUDIO_SetVoiceID(1, VOICE_ID_3);
+break;
+case 4:
+AUDIO_SetVoiceID(1, VOICE_ID_4);
+break;
+case 5:
+AUDIO_SetVoiceID(1, VOICE_ID_5);
+break;
+case 6:
+AUDIO_SetVoiceID(1, VOICE_ID_6);
+break;
+case 7:
+AUDIO_SetVoiceID(1, VOICE_ID_7);
+break;
+case 8:
+AUDIO_SetVoiceID(1, VOICE_ID_8);
+break;
+case 9:
+AUDIO_SetVoiceID(1, VOICE_ID_9);
+break;
+}
+AUDIO_PlaySingleVoice(true);
+}
+
+uint8_t UI_MENU_GetMenuIdx(uint8_t id)
+{
+	for(uint8_t i = 0; i < ARRAY_SIZE(MenuList); i++)
+		if(MenuList[i].menu_id == id)
+			return i;
+	return 0;
+}
+
 uint8_t UI_MENU_GetMenuIdx(uint8_t id)
 {
 	for(uint8_t i = 0; i < ARRAY_SIZE(MenuList); i++)
@@ -489,6 +597,19 @@ void UI_DisplayMenu(void)
 	   It also has to be set back to max when pressing the Exit key. */
 
 	BACKLIGHT_TurnOn();
+
+#ifdef ENABLE_VOICE
+if (MenuList[gMenuCursor].voice_id != VOICE_ID_INVALID)
+{
+AUDIO_SetVoiceID(0, MenuList[gMenuCursor].voice_id);
+}
+else
+{
+set_voice_number(gMenuCursor);
+}
+if (!gIsInSubMenu)
+AUDIO_PlaySingleVoice(0);
+#endif  
 
 	switch (UI_MENU_GetCurrentMenuId())
 	{
