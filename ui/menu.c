@@ -1219,6 +1219,14 @@ AUDIO_PlaySingleVoice(0);
 
 		case MENU_RESET:
 			strcpy(String, gSubMenu_RESET[gSubMenuSelection]);
+if (gSubMenuSelection == 0)
+AUDIO_SetDigitVoice(0, VOICE_ID_1);
+else if (gSubMenuSelection == 1)
+AUDIO_SetDigitVoice(0, VOICE_ID_2);
+		#ifdef ENABLE_VOICE
+if (gIsInSubMenu)
+AUDIO_PlaySingleVoice(0);
+#endif
 			break;
 
 		case MENU_F_LOCK:
