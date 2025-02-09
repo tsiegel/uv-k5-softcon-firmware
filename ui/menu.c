@@ -1354,6 +1354,11 @@ case 8:
 AUDIO_SetVoiceID(0, VOICE_ID_8);
 break;
 }
+#ifdef ENABLE_VOICE
+if (gIsInSubMenu)
+AUDIO_PlaySingleVoice(0);
+
+#endif
 			break;
 
 		#ifdef ENABLE_F_CAL_MENU
