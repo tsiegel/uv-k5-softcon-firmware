@@ -37,6 +37,7 @@
 #include "driver/bk4819.h"
 #include "driver/gpio.h"
 #include "driver/backlight.h"
+#include "../external/printf/printf.h"
 #include "functions.h"
 #include "misc.h"
 #include "settings.h"
@@ -314,6 +315,29 @@ void ACTION_Handle(KEY_Code_t Key, bool bKeyPressed, bool bKeyHeld)
 	if (bKeyHeld || bKeyPressed) // held
 	{
 		funcShort = funcLong;
+{
+unsigned int count1;
+const uint32_t frequency = gTxVfo->freq_config_RX.Frequency;
+int32_t freq1, freq2;
+char strfreq[10];
+freq1 = frequency / 100000;
+freq2 = frequency % 100000;
+sprintf(strfreq, "%ld", freq1);
+if (frequency >= _1GHz_in_KHz) {
+AUDIO_PlayBeep(BEEP_880HZ_200MS);
+}
+for (count1 = 0; count1 < strlen(strfreq); count1++) {
+AUDIO_SetDigitVoice(0, strfreq[count1]-48);
+AUDIO_PlaySingleVoice(true); 
+}
+sprintf(strfreq, "%ld", freq2);
+for (count1 = 0; count1 < strlen(strfreq); count1++) {
+AUDIO_SetDigitVoice(0, strfreq[count1]-48);
+if (count1 == strlen(strfreq)-2 && strfreq[count1] == '0' && strfreq[count1+1] == '0')
+break;
+AUDIO_PlaySingleVoice(true); 
+}
+}
 
 		if (!bKeyPressed) //ignore release if held
 			return;
@@ -353,6 +377,9 @@ void ACTION_FM(void)
 		gRequestDisplayScreen = DISPLAY_FM;
 	}
 }
+
+
+
 
 static void ACTION_Scan_FM(bool bRestart)
 {
