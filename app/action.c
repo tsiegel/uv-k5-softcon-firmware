@@ -125,19 +125,9 @@ void ACTION_Power(void)
 	gRequestDisplayScreen = gScreenToDisplay;
 
 #ifdef ENABLE_VOICE
-//	gAnotherVoiceID   = VOICE_ID_POWER;
 AUDIO_SetVoiceID(0, VOICE_ID_POWER);
-switch (gTxVfo->OUTPUT_POWER) {
-case 0:
-AUDIO_SetVoiceID(1, VOICE_ID_1);
-break;
-case 1:
-AUDIO_SetVoiceID(1, VOICE_ID_2);
-break;
-case 2:
-AUDIO_SetVoiceID(1, VOICE_ID_3);
-break;
-}
+AUDIO_PlaySingleVoice(true);
+AUDIO_SetDigitVoice(0, gTxVfo->OUTPUT_POWER + 1);
 AUDIO_PlaySingleVoice(true);
 #endif
 
