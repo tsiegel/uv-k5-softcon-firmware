@@ -1182,6 +1182,7 @@ break;
 }
 if (gIsInSubMenu)
 AUDIO_PlaySingleVoice(0);
+#end if
 			break;
 
 		case MENU_RP_STE:
