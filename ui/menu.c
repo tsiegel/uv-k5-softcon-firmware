@@ -486,14 +486,6 @@ uint8_t UI_MENU_GetMenuIdx(uint8_t id)
 	return 0;
 }
 
-uint8_t UI_MENU_GetMenuIdx(uint8_t id)
-{
-	for(uint8_t i = 0; i < ARRAY_SIZE(MenuList); i++)
-		if(MenuList[i].menu_id == id)
-			return i;
-	return 0;
-}
-
 int32_t gSubMenuSelection;
 
 // edit box
@@ -727,7 +719,7 @@ AUDIO_SetVoiceID(0, VOICE_ID_10);
 break;
 case 13:
 AUDIO_SetVoiceID(0, VOICE_ID_12);
-AUDIO_SetVoiceID(2, VOICE_ID_5);
+AUDIO_SetVoiceID(1, VOICE_ID_5);
 break;
 case 14:
 AUDIO_SetVoiceID(0,VOICE_ID_15);
@@ -1097,6 +1089,7 @@ break;
 }
 if (gIsInSubMenu)
 AUDIO_PlaySingleVoice(0);
+#endif
 			break;
 
 		case MENU_TOT:
@@ -1357,7 +1350,6 @@ break;
 #ifdef ENABLE_VOICE
 if (gIsInSubMenu)
 AUDIO_PlaySingleVoice(0);
-
 #endif
 			break;
 
