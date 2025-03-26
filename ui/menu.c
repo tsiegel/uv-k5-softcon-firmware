@@ -1151,16 +1151,13 @@ AUDIO_PlayBeep(BEEP_880HZ_60MS_TRIPLE_BEEP);
 			break;
 
 		case MENU_OFFSET:
+#ifdef ENABLE_VOICE
+int16_t freq1, freq2;
+#endif
 			if (!gIsInSubMenu || gInputBoxIndex == 0)
 			{
 				sprintf(String, "%3d.%05u", gSubMenuSelection / 100000, abs(gSubMenuSelection) % 100000);
 				UI_PrintString(String, menu_item_x1, menu_item_x2, 1, 8);
-int16_t freq1, freq2;
-freq1 = GSubMenuSelection / 100000;
-freq2 = abs(gSubMenuSelection) % 100000);
-AUDIO_SetDigitVoice(0, freq1);
-AUDIO_SetDigitVoice(1, freq2);
-			AUDIO_PlaySingleVoice(0);
 			}
 			else
 			{
@@ -1170,6 +1167,15 @@ AUDIO_SetDigitVoice(1, freq2);
 			}
 
 			UI_PrintString("MHz",  menu_item_x1, menu_item_x2, 3, 8);
+
+if (gIsInSubMenu)
+#ifdef ENABLE_VOICE
+freq1 = gSubMenuSelection / 100000;
+freq2 = abs(gSubMenuSelection) % 100000;
+AUDIO_SetDigitVoice(0, freq1);
+AUDIO_SetDigitVoice(1, freq2);
+			AUDIO_PlaySingleVoice(0);
+#endif
 
 			already_printed = true;
 			break;
@@ -1325,7 +1331,11 @@ AUDIO_PlaySingleVoice(0);
 
 			UI_GenerateChannelStringEx(String, valid, gSubMenuSelection);
 			UI_PrintString(String, menu_item_x1, menu_item_x2, 0, 8);
-
+if (gIsInSubMenu)
+#ifdef ENABLE_VOICE
+AUDIO_SetDigitVoice(0, gSubMenuSelection+1);
+			AUDIO_PlaySingleVoice(0);
+#endif
 			if (valid && !gAskForConfirmation)
 			{	// show the frequency so that the user knows the channels frequency
 				const uint32_t frequency = SETTINGS_FetchChannelFrequency(gSubMenuSelection);
