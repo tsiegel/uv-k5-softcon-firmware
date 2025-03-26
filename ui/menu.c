@@ -801,11 +801,331 @@ AUDIO_PlaySingleVoice(0);
 			if (gSubMenuSelection == 0) {
 				strcpy(String, "OFF");
 AUDIO_SetVoiceID(0, VOICE_ID_OFF);
+AUDIO_PlaySingleVoice(0);
 }
 			else
 				sprintf(String, "%u.%uHz", CTCSS_Options[gSubMenuSelection - 1] / 10, CTCSS_Options[gSubMenuSelection - 1] % 10);
 if (gIsInSubMenu)
 #ifdef ENABLE_VOICE
+switch (gSubMenuSelection) {
+case 0:
+AUDIO_SetVoiceID(0, VOICE_ID_OFF);
+break;
+case 1:
+AUDIO_SetVoiceID(0, VOICE_ID_60);
+AUDIO_SetVoiceID(1, VOICE_ID_7);
+AUDIO_SetVoiceID(2, VOICE_ID_0);
+break;
+case 2:
+AUDIO_SetVoiceID(0, VOICE_ID_60);
+AUDIO_SetVoiceID(1, VOICE_ID_9);
+AUDIO_SetVoiceID(2, VOICE_ID_3);
+break;
+case 3:
+AUDIO_SetVoiceID(0, VOICE_ID_70);
+AUDIO_SetVoiceID(1, VOICE_ID_1);
+AUDIO_SetVoiceID(2, VOICE_ID_9);
+break;
+case 4:
+AUDIO_SetVoiceID(0, VOICE_ID_70);
+AUDIO_SetVoiceID(1, VOICE_ID_4);
+AUDIO_SetVoiceID(2, VOICE_ID_4);
+break;
+case 5:
+AUDIO_SetVoiceID(0, VOICE_ID_70);
+AUDIO_SetVoiceID(1, VOICE_ID_7);
+AUDIO_SetVoiceID(2, VOICE_ID_0);
+break;
+case 6:
+AUDIO_SetVoiceID(0, VOICE_ID_70);
+AUDIO_SetVoiceID(1, VOICE_ID_9);
+AUDIO_SetVoiceID(2, VOICE_ID_7);
+break;
+case 7:
+AUDIO_SetVoiceID(0, VOICE_ID_80);
+AUDIO_SetVoiceID(1, VOICE_ID_2);
+AUDIO_SetVoiceID(2, VOICE_ID_5);
+break;
+case 8:
+AUDIO_SetVoiceID(0, VOICE_ID_80);
+AUDIO_SetVoiceID(1, VOICE_ID_5);
+AUDIO_SetVoiceID(2, VOICE_ID_4);
+break;
+case 9:
+AUDIO_SetVoiceID(0, VOICE_ID_80);
+AUDIO_SetVoiceID(1, VOICE_ID_8);
+AUDIO_SetVoiceID(2, VOICE_ID_5);
+break;
+case 10:
+AUDIO_SetVoiceID(0, VOICE_ID_90);
+AUDIO_SetVoiceID(1, VOICE_ID_1);
+AUDIO_SetVoiceID(2, VOICE_ID_5);
+break;
+case 11:
+AUDIO_SetVoiceID(0, VOICE_ID_90);
+AUDIO_SetVoiceID(1, VOICE_ID_4);
+AUDIO_SetVoiceID(2, VOICE_ID_8);
+break;
+case 12:
+AUDIO_SetVoiceID(0, VOICE_ID_90);
+AUDIO_SetVoiceID(1, VOICE_ID_7);
+AUDIO_SetVoiceID(2, VOICE_ID_4);
+break;
+case 13:
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_0);
+break;
+case 14:
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_3);
+AUDIO_SetVoiceID(3, VOICE_ID_5);
+break;
+case 15:
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_7);
+AUDIO_SetVoiceID(3, VOICE_ID_2);
+break;
+case 16:
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_10);
+AUDIO_SetVoiceID(3, VOICE_ID_9);
+break;
+case 17:
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_14);
+AUDIO_SetVoiceID(3, VOICE_ID_8);
+break;
+case 18:
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_18);
+AUDIO_SetVoiceID(3, VOICE_ID_8);
+break;
+case 19:
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_20);
+AUDIO_SetVoiceID(3, VOICE_ID_3);
+AUDIO_SetVoiceID(4, VOICE_ID_0);
+break;
+case 20:
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_20);
+AUDIO_SetVoiceID(3, VOICE_ID_7);
+AUDIO_SetVoiceID(4, VOICE_ID_3);
+break;
+case 21:
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_30);
+AUDIO_SetVoiceID(3, VOICE_ID_1);
+AUDIO_SetVoiceID(4, VOICE_ID_8);
+break;
+case 22:
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_30);
+AUDIO_SetVoiceID(3, VOICE_ID_6);
+AUDIO_SetVoiceID(4, VOICE_ID_5);
+break;
+case 23:
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_40);
+AUDIO_SetVoiceID(3, VOICE_ID_1);
+AUDIO_SetVoiceID(4, VOICE_ID_3);
+break;
+case 24:
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_40);
+AUDIO_SetVoiceID(3, VOICE_ID_6);
+AUDIO_SetVoiceID(4, VOICE_ID_2);
+break;
+case 25:
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_50);
+AUDIO_SetVoiceID(3, VOICE_ID_1);
+AUDIO_SetVoiceID(4, VOICE_ID_4);
+break;
+case 26:
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_50);
+AUDIO_SetVoiceID(3, VOICE_ID_6);
+AUDIO_SetVoiceID(4, VOICE_ID_7);
+break;
+case 27:
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_50);
+AUDIO_SetVoiceID(3, VOICE_ID_9);
+AUDIO_SetVoiceID(4, VOICE_ID_8);
+break;
+case 28:
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_60);
+AUDIO_SetVoiceID(3, VOICE_ID_2);
+AUDIO_SetVoiceID(4, VOICE_ID_2);
+break;
+case 29:
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_60);
+AUDIO_SetVoiceID(3, VOICE_ID_5);
+AUDIO_SetVoiceID(4, VOICE_ID_5);
+break;
+case 30:
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_60);
+AUDIO_SetVoiceID(3, VOICE_ID_7);
+AUDIO_SetVoiceID(4, VOICE_ID_9);
+break;
+case 31:
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_70);
+AUDIO_SetVoiceID(3, VOICE_ID_1);
+AUDIO_SetVoiceID(4, VOICE_ID_3);
+break;
+case 32:
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_70);
+AUDIO_SetVoiceID(3, VOICE_ID_3);
+AUDIO_SetVoiceID(4, VOICE_ID_8);
+break;
+case 33:
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_70);
+AUDIO_SetVoiceID(3, VOICE_ID_7);
+AUDIO_SetVoiceID(4, VOICE_ID_3);
+break;
+case 34:
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_70);
+AUDIO_SetVoiceID(3, VOICE_ID_9);
+AUDIO_SetVoiceID(4, VOICE_ID_9);
+break;
+case 35:
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_80);
+AUDIO_SetVoiceID(3, VOICE_ID_3);
+AUDIO_SetVoiceID(4, VOICE_ID_5);
+break;
+case 36:
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_80);
+AUDIO_SetVoiceID(3, VOICE_ID_6);
+AUDIO_SetVoiceID(4, VOICE_ID_2);
+break;
+case 37:
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_80);
+AUDIO_SetVoiceID(3, VOICE_ID_9);
+AUDIO_SetVoiceID(4, VOICE_ID_9);
+break;
+case 38:
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_90);
+AUDIO_SetVoiceID(3, VOICE_ID_2);
+AUDIO_SetVoiceID(4, VOICE_ID_8);
+break;
+case 39:
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_90);
+AUDIO_SetVoiceID(3, VOICE_ID_6);
+AUDIO_SetVoiceID(4, VOICE_ID_6);
+break;
+case 40:
+AUDIO_SetVoiceID(0, VOICE_ID_1);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_90);
+AUDIO_SetVoiceID(3, VOICE_ID_9);
+AUDIO_SetVoiceID(4, VOICE_ID_5);
+break;
+case 41:
+AUDIO_SetVoiceID(0, VOICE_ID_2);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_3);
+AUDIO_SetVoiceID(3, VOICE_ID_5);
+break;
+case 42:
+AUDIO_SetVoiceID(0, VOICE_ID_2);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_6);
+AUDIO_SetVoiceID(3, VOICE_ID_5);
+break;
+case 43:
+AUDIO_SetVoiceID(0, VOICE_ID_2);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_10);
+AUDIO_SetVoiceID(3, VOICE_ID_7);
+break;
+case 44:
+AUDIO_SetVoiceID(0, VOICE_ID_2);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_18);
+AUDIO_SetVoiceID(3, VOICE_ID_1);
+break;
+case 45:
+AUDIO_SetVoiceID(0, VOICE_ID_2);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_20);
+AUDIO_SetVoiceID(3, VOICE_ID_5);
+AUDIO_SetVoiceID(4, VOICE_ID_7);
+break;
+case 46:
+AUDIO_SetVoiceID(0, VOICE_ID_2);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_20);
+AUDIO_SetVoiceID(3, VOICE_ID_9);
+AUDIO_SetVoiceID(4, VOICE_ID_1);
+break;
+case 47:
+AUDIO_SetVoiceID(0, VOICE_ID_2);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_30);
+AUDIO_SetVoiceID(3, VOICE_ID_3);
+AUDIO_SetVoiceID(4, VOICE_ID_6);
+break;
+case 48:
+AUDIO_SetVoiceID(0, VOICE_ID_2);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_40);
+AUDIO_SetVoiceID(3, VOICE_ID_1);
+AUDIO_SetVoiceID(4, VOICE_ID_8);
+break;
+case 49:
+AUDIO_SetVoiceID(0, VOICE_ID_2);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_50);
+AUDIO_SetVoiceID(3, VOICE_ID_3);
+break;
+case 50:
+AUDIO_SetVoiceID(0, VOICE_ID_2);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+AUDIO_SetVoiceID(2, VOICE_ID_50);
+AUDIO_SetVoiceID(3, VOICE_ID_4);
+AUDIO_SetVoiceID(4, VOICE_ID_1);
+break;
+}
 AUDIO_PlaySingleVoice(0);
 #endif
 			break;
@@ -835,6 +1155,12 @@ AUDIO_PlayBeep(BEEP_880HZ_60MS_TRIPLE_BEEP);
 			{
 				sprintf(String, "%3d.%05u", gSubMenuSelection / 100000, abs(gSubMenuSelection) % 100000);
 				UI_PrintString(String, menu_item_x1, menu_item_x2, 1, 8);
+int16_t freq1, freq2;
+freq1 = GSubMenuSelection / 100000;
+freq2 = abs(gSubMenuSelection) % 100000);
+AUDIO_SetDigitVoice(0, freq1);
+AUDIO_SetDigitVoice(1, freq2);
+			AUDIO_PlaySingleVoice(0);
 			}
 			else
 			{
@@ -872,8 +1198,11 @@ AUDIO_PlaySingleVoice(0);
 
 		#ifdef ENABLE_VOX
 			case MENU_VOX:
-				if (gSubMenuSelection == 0)
+				if (gSubMenuSelection == 0) {
 					strcpy(String, "OFF");
+AUDIO_SetVoiceID(0,VOICE_ID_OFF);
+AUDIO_PlaySingleVoice(0);
+}
 				else
 					sprintf(String, "%d", gSubMenuSelection);
 				break;
@@ -1182,7 +1511,7 @@ break;
 }
 if (gIsInSubMenu)
 AUDIO_PlaySingleVoice(0);
-#end if
+#endif
 			break;
 
 		case MENU_RP_STE:
