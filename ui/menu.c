@@ -800,17 +800,17 @@ AUDIO_PlaySingleVoice(0);
 		{
 			if (gSubMenuSelection == 0) {
 				strcpy(String, "OFF");
+#ifdef ENABLE_VOICE
 AUDIO_SetVoiceID(0, VOICE_ID_OFF);
+if (gIsInSubMenu)
 AUDIO_PlaySingleVoice(0);
+#endif
 }
 			else
 				sprintf(String, "%u.%uHz", CTCSS_Options[gSubMenuSelection - 1] / 10, CTCSS_Options[gSubMenuSelection - 1] % 10);
-if (gIsInSubMenu)
+if (gIsInSubMenu) {
 #ifdef ENABLE_VOICE
 switch (gSubMenuSelection) {
-case 0:
-AUDIO_SetVoiceID(0, VOICE_ID_OFF);
-break;
 case 1:
 AUDIO_SetVoiceID(0, VOICE_ID_60);
 AUDIO_SetVoiceID(1, VOICE_ID_7);
@@ -1128,6 +1128,7 @@ break;
 }
 AUDIO_PlaySingleVoice(0);
 #endif
+}
 			break;
 		}
 
@@ -1168,7 +1169,7 @@ int16_t freq1, freq2;
 
 			UI_PrintString("MHz",  menu_item_x1, menu_item_x2, 3, 8);
 
-if (gIsInSubMenu)
+if (gIsInSubMenu) {
 #ifdef ENABLE_VOICE
 freq1 = gSubMenuSelection / 100000;
 freq2 = abs(gSubMenuSelection) % 100000;
@@ -1176,7 +1177,7 @@ AUDIO_SetDigitVoice(0, freq1);
 AUDIO_SetDigitVoice(1, freq2);
 			AUDIO_PlaySingleVoice(0);
 #endif
-
+}
 			already_printed = true;
 			break;
 
@@ -1194,12 +1195,74 @@ AUDIO_PlaySingleVoice(0);
 
 		case MENU_SCR:
 			strcpy(String, gSubMenu_SCRAMBLER[gSubMenuSelection]);
+switch (gSubMenuSelection) {
+case 1:
+AUDIO_SetVoiceID(0,VOICE_ID_20);
+AUDIO_SetVoiceID(1, VOICE_ID_6);
+AUDIO_SetVoiceID(2, VOICE_ID_100);
+break;
+case 2:
+AUDIO_SetVoiceID(0,VOICE_ID_20);
+AUDIO_SetVoiceID(1, VOICE_ID_7);
+AUDIO_SetVoiceID(2, VOICE_ID_100);
+break;
+case 3:
+AUDIO_SetVoiceID(0,VOICE_ID_20);
+AUDIO_SetVoiceID(1, VOICE_ID_8);
+AUDIO_SetVoiceID(2, VOICE_ID_100);
+break;
+case 4:
+AUDIO_SetVoiceID(0,VOICE_ID_20);
+AUDIO_SetVoiceID(1, VOICE_ID_9);
+AUDIO_SetVoiceID(2, VOICE_ID_100);
+break;
+case 5:
+AUDIO_SetVoiceID(0,VOICE_ID_30);
+AUDIO_SetVoiceID(1, VOICE_ID_100);
+break;
+case 6:
+AUDIO_SetVoiceID(0,VOICE_ID_30);
+AUDIO_SetVoiceID(1, VOICE_ID_1);
+AUDIO_SetVoiceID(2, VOICE_ID_100);
+break;
+case 7:
+AUDIO_SetVoiceID(0,VOICE_ID_30);
+AUDIO_SetVoiceID(1, VOICE_ID_2);
+AUDIO_SetVoiceID(2, VOICE_ID_100);
+break;
+case 8:
+AUDIO_SetVoiceID(0,VOICE_ID_30);
+AUDIO_SetVoiceID(1, VOICE_ID_3);
+AUDIO_SetVoiceID(2, VOICE_ID_100);
+break;
+case 9:
+AUDIO_SetVoiceID(0,VOICE_ID_30);
+AUDIO_SetVoiceID(1, VOICE_ID_4);
+AUDIO_SetVoiceID(2, VOICE_ID_100);
+break;
+case 10:
+AUDIO_SetVoiceID(0,VOICE_ID_30);
+AUDIO_SetVoiceID(1, VOICE_ID_5);
+AUDIO_SetVoiceID(2, VOICE_ID_100);
+break;
+}
+#ifdef ENABLE_VOICE
+AUDIO_PlaySingleVoice(0);
+#endif
 			#if 1
-				if (gSubMenuSelection > 0 && gSetting_ScrambleEnable)
+				if (gSubMenuSelection > 0 && gSetting_ScrambleEnable) {
 					BK4819_EnableScramble(gSubMenuSelection - 1);
-				else
+AUDIO_SetVoiceID(0, VOICE_ID_SCRAMBLER_ON);
+}
+				else {
 					BK4819_DisableScramble();
+AUDIO_SetVoiceID(0, VOICE_ID_SCRAMBLER_OFF);
+}
 			#endif
+#ifdef ENABLE_VOICE
+if (gIsInSubMenu)
+AUDIO_PlaySingleVoice(0);
+#endif
 			break;
 
 		#ifdef ENABLE_VOX
@@ -1207,10 +1270,15 @@ AUDIO_PlaySingleVoice(0);
 				if (gSubMenuSelection == 0) {
 					strcpy(String, "OFF");
 AUDIO_SetVoiceID(0,VOICE_ID_OFF);
-AUDIO_PlaySingleVoice(0);
 }
-				else
+				else {
 					sprintf(String, "%d", gSubMenuSelection);
+AUDIO_SetDigitVoiceID(0, gSubMenuSelection);
+}
+if (gIsInSubMenu)
+#ifdef ENABLE_VOICE
+AUDIO_PlaySingleVoice(0);
+#endif
 				break;
 		#endif
 
@@ -1266,6 +1334,14 @@ AUDIO_SetVoiceID(0,VOICE_ID_2);
 break;
 case 2:
 AUDIO_SetVoiceID(0, VOICE_ID_3);
+#ifdef ENABLE_BYP_RAW_DEMODULATORS
+case 3:
+AUDIO_SetVoiceID(0, VOICE_ID_4);
+break;
+case 4:
+AUDIO_SetVoiceID(0, VOICE_ID_5);
+break;
+#endif
 break;
 }
 #ifdef ENABLE_VOICE
